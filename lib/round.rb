@@ -22,9 +22,19 @@ class Round
     turn
   end
 
-  def number_correct
+  def number_correct_array
     @turns.select do |turn|
       turn.correct?
+    end
+  end
+
+  def number_correct
+    number_correct_array.count
+  end
+
+  def number_correct_by_category(category)
+    number_correct_array.select do |correct_turn|
+      correct_turn.card.category == category
     end.count
   end
 end
