@@ -24,42 +24,41 @@ class RoundTest < Minitest::Test
     assert_equal @deck, @round.deck
     assert_equal [], @round.turns
   end
+
+  def test_the_return_of_the_first_card
+    assert_equal @card_1, @round.current_card
+  end
+
+  def test_taking_a_turn
+    new_turn = @round.take_turn("Juneau")
+
+    assert_instance_of Turn, new_turn
+    assert new_turn.correct?
+  end
+
+  def test_counting_turns
+    new_turn = @round.take_turn("Juneau")
+
+    assert_equal new_turn, @round.turns
+    assert_equal 1, @round.number_correct
+  end
+
+  def test_next_turn_different_card
+    @round.take_turn("Juneau")
+
+    assert_equal @card_2, @round.current_card
+
+    @round.take_turn("Venus")
+
+    assert_equal 2, @round.number_correct
+    assert_equal "Incorrect.", @round.turns.last.feedback
+    assert_equal 1, @round.number_correct
+  end
+
 end
 
-#
-# round.current_card
-# #=> #<Card:0x00007fa16104e160 @answer="Juneau", @question="What is the capital of Alaska?", @category=:Geography>
-#
-# new_turn = round.take_turn("Juneau")
-# #=> #<Turn:0x00007f99842f09e8 @card=#<Card:0x00007f800e29f0c9 @question=""What is the capital of Alaska?", @answer="Juneau", @category=:Geography>, @guess="Juneau">
-#
-# new_turn.class
-# #=> Turn
-#
-# new_turn.correct?
-# #=> true
-#
-# round.turns
-# #=> [#<Turn:0x00007f99842f09e8 @card=#<Card:0x00007f800e29f0c9 @question=""What is the capital of Alaska?", @answer="Juneau", @category=:Geography>, @guess="Juneau">]
-#
-# round.number_correct
-# #=> 1
-#
-# round.current_card
-# #=> #<Card:0x00007fa160a62e90 @answer="Mars", @question="The Viking spacecraft sent back to Earth photographs and reports about the surface of which planet?", @category=:STEM>
-#
-# round.take_turn("Venus")
-# #=> #<Turn:0x00007f972a215b38...>
-#
-# round.turns.count
-# #=> 2
-#
-# round.turns.last.feedback
-# #=> "Incorrect."
-#
-# round.number_correct
-# #=> 1
-#
+
+
 # round.number_correct_by_category(:Geography)
 # #=> 1
 #
